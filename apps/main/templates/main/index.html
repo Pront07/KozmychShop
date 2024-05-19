@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Домашня{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1>Welcome to Our Fashion Online Store!</h1>
+        <p>Here you will find the latest fashion trends from Europe, highest quality, and impeccable style. Our team carefully selects each item so you can enjoy your purchase and look fabulous in any outfit.</p>
+        <p>We offer a wide range of clothing for every season at affordable prices. Additionally, we guarantee fast delivery and professional service.</p>
+        <p>Join our fashion community today and let us help you find the perfect look for any occasion!</p>
+      </div>
+    </div>
+    <div class="row">
+      <div id="products-carousel" class="owl-carousel">
+        {% for product in products %}
+          {% with product.main_image.image_thumbnail as main_image %}
+            {% if main_image %}
+              {% with product.main_category.slug as category_slug %}
+                {% with product.slug as product_slug %}
+                  <div class="item card">
+                    <a href="{% url 'catalog:product' category_slug=category_slug slug=product_slug %}" class="text-decoration-none text-dark">
+                      <img src="{{ main_image }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px;">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.price_display }}</p>
+                      </div>
+                    </a>
+                  </div>
+                {% endwith %}
+              {% endwith %}
+            {% endif %}
+          {% endwith %}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="row mt-4 rounded-3 bg-body-tertiary p-4">
+      <div class="col-12">
+        <h3>Oops! Something went wrong</h3>
+        <p>There's no bonus for you</p>
+        <p>What to do?</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+<script>
+  $(document).ready(function() {
+    var products = [
+      {% for product in products %}
+        {
+          name: "{{ product.name }}",
+          main_image: "{{ product.main_image.image_thumbnail }}",
+          main_category_slug: "{{ product.main_category.slug }}",
+          slug: "{{ product.slug }}",
+          price_display: "{{ product.price_display }}"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ];
+
+    var carousel = $('#products-carousel');
+
+    // Adding product cards to the carousel
+    $.each(products, function(index, product) {
+      var main_image = product.main_image;
+      if (main_image) {
+        var fulllink = `/catalog/${product.main_category_slug}/${product.slug}/`;
+
+        var item = $('<div class="item card">');
+        var link = $(`<a href="${fulllink}" class="text-decoration-none text-dark">`);
+        var img = $(`<img src="${main_image}" class="card-img-top" alt="${product.name}" style="height: 200px;">`);
+        var cardBody = $('<div class="card-body">');
+        var title = $('<h5 class="card-title">' + product.name + '</h5>');
+        var price = $('<p class="card-text">' + product.price_display + '</p>');
+
+        link.append(img);
+        cardBody.append(title);
+        cardBody.append(price);
+        link.append(cardBody);
+        item.append(link);
+
+        carousel.append(item);
+      }
+    });
+
+    // Initializing the carousel
+    carousel.owlCarousel({
+      loop: false,
+      margin: 10,
+      nav: true,
+      responsive: {
+        0: { items: 1 },
+        600: { items: 3 },
+        1000: { items: 5 }
+      }
+    });
+  });
+</script>
+{% endblock %}

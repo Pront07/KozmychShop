@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Новини{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h1 class="text-center mb-5">Новини відомих брендів одягу</h1>
+                <div id="news">
+                    {% for brand, news_list in all_clothing_news.items %}
+                    <div class="brand-news mb-5">
+                        <h2>{{ brand }}</h2>
+                        <div class="row">
+                            {% for news in news_list|slice:":20" %}
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <img src="{{ news.image_url }}" class="card-img-top" alt="{{ news.title }}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ news.title }}</h5>
+                                        <p class="card-text">{{ news.description }}</p>
+                                        <a href="{{ news.url }}" class="btn btn-primary">Детальніше</a>
+                                        <p class="text-muted mt-2">{{ news.published_at }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+<script>
+    fetch('/clothing_news')
+        .then(response => response.json())
+        .then(data => {
+            const newsDiv = document.getElementById('news');
+            for (const [brand, newsList] of Object.entries(data)) {
+                const brandHeader = document.createElement('h2');
+                brandHeader.textContent = brand;
+                newsDiv.appendChild(brandHeader);
+
+                const brandNewsList = document.createElement('div');
+                brandNewsList.classList.add('row');
+                newsList.slice(0, 20).forEach(news => {
+                    const newsItem = document.createElement('div');
+                    newsItem.classList.add('col-md-6', 'mb-4');
+                    newsItem.innerHTML = `
+                        <div class="card">
+                            <img src="${news.image_url}" class="card-img-top" alt="${news.title}">
+                            <div class="card-body">
+                                <h5 class="card-title">${news.title}</h5>
+                                <p class="card-text">${news.description}</p>
+                                <a href="${news.url}" class="btn btn-primary">Детальніше</a>
+                                <p class="text-muted mt-2">${news.published_at}</p>
+                            </div>
+                        </div>
+                    `;
+                    brandNewsList.appendChild(newsItem);
+                });
+                newsDiv.appendChild(brandNewsList);
+            }
+        })
+        .catch(error => console.error('Помилка при отриманні новин:', error));
+</script>

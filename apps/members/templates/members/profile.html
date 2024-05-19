@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+{% block title %}Профіль{% endblock %}
+{% block content %}
+<div class="mt-4 rounded-3 bg-body-tertiary p-4">
+    <div class="row g-4">
+        <div class="col-12 col-md-4">
+            <img src="{{profile.get_avatar}}" class="img-fluid rounded-circle mx-auto d-block" alt="...">
+            {% if another_user %}
+            <div class="d-flex justify-content-center mt-2">
+                {% if not is_following %}
+                <a href="{% url 'members:follow' user_profile.username %}" class="btn btn-primary">Підписатися</a>
+                {% else %}
+                <a href="{% url 'members:follow' user_profile.username %}" class="btn btn-danger">Відписатися</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        {% if not profile.is_private or not another_user %}
+        <div class="col-8">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+    <a class="nav-link active" id="simple-tab-0" data-bs-toggle="tab" href="#simple-tabpanel-0"
+       role="tab" aria-controls="simple-tabpanel-0" aria-selected="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+        </svg>
+        Info
+    </a>
+</li>
+
+                {% if not another_user %}
+                <li class="nav-item" role="presentation">
+    <a class="nav-link" id="simple-tab-2" data-bs-toggle="tab" href="#simple-tabpanel-2" role="tab"
+       aria-controls="simple-tabpanel-2" aria-selected="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
+            <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+        </svg>
+        Orders
+    </a>
+</li>
+
+                <li class="nav-item" role="presentation">
+    <a class="nav-link" id="simple-tab-1" data-bs-toggle="tab" href="#simple-tabpanel-1" role="tab"
+        aria-controls="simple-tabpanel-1" aria-selected="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+            <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
+            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291a1.873 1.873 0 0 0-1.116-2.693l-.318-.094c-.835-.246-.835-1.428 0-1.674l.319-.094a1.873 1.873 0 0 0 1.115-2.693l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
+        </svg>
+        Settings
+    </a>
+</li>
+
+                {% endif %}
+            </ul>
+            <div class="mt-4 rounded-3 bg-body-tertiary p-4">
+                <div class="tab-content pt-5" id="tab-content">
+                    <div class="tab-pane active" id="simple-tabpanel-0" role="tabpanel" aria-labelledby="simple-tab-0">
+                        <h3 class="text-center">Профіль</h3>
+                        <p>Ім'я користувача: {{ user_profile.username }}</p>
+                        <p>Ім'я: {{ user_profile.first_name }}</p>
+                        <p>Прізвище: {{ user_profile.last_name }}</p>
+                        <p>Електронна пошта: {{ user_profile.email }}</p>
+                        <p>Дата реєстрації: {{ user_profile.date_joined }}</p>
+                        <p>Дата останнього входу: {{ user_profile.last_login }}</p>
+                        <p>Біо: {{ profile.bio|safe }}</p>
+                        <p>Дата народження: {{ profile.birth_date }}</p>
+                        <p>Місце проживання: {{ profile.location }}</p>
+
+                    </div>
+                    {% if not another_user %}
+                    <div class="tab-pane" id="simple-tabpanel-2" role="tabpanel" aria-labelledby="simple-tab-2">
+                        <h5>Замовлення</h5>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">№</th>
+                                <th scope="col">Дата</th>
+                                <th scope="col">Остання зміна</th>
+                                <th scope="col">Сума</th>
+                                <th scope="col">Статус</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for order in orders.all %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ order.created_at }}</td>
+                                <td>{{ order.updated_at }}</td>
+                                <td>{{ order.total_price }}</td>
+                                <td>{{ order.get_status_display }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="tab-pane" id="simple-tabpanel-1" role="tabpanel" aria-labelledby="simple-tab-1">
+                        <h5>Редагування профілю</h5>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#editProfileModal">
+                            Змінити профіль
+                        </button>
+
+                        <hr class="my-4">
+                        <h5>Приватність</h5>
+                        <form action="{% url 'members:privacy' user_profile.username %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                                       name="is_private" {% if profile.is_private %} checked {% endif %}>
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Приватний профіль
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-4">Зберегти</button>
+                        </form>
+                        <hr class="my-4">
+                        <h5>Змінити пароль</h5>
+                        <a href="{% url 'members:change_password' %}" class="btn btn-primary">Змінити пароль</a>
+                        <hr class="my-4">
+
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% if profile.get_followers %}
+            <div class="col-12">
+                <hr class="my-4">
+                <h3 class="text-center">Підписки</h3>
+                <div class="row g-4">
+                    <ul class="list-unstyled">
+                        {% for follower in profile.get_followers %}
+                        <li>
+                            <div class="d-flex align-items-left">
+                                <img src="{{follower.profile.get_avatar}}" class="rounded-circle" alt="..."
+                                     style="width: 30px; height: 30px;">
+                                <a href="{% url 'members:profile' follower.user.username %}"
+                                   class="text-decoration-none text-primary hover-underline">
+                                    <small class="ms-3">@{{ follower.username }}</small>
+                                </a>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            </div>
+            {% endif %}
+            {% if profile.get_following %}
+            <div class="col-12">
+                <hr class="my-4">
+                <h3 class="text-center">Підписники</h3>
+                <div class="row g-4">
+                    <ul class="list-unstyled">
+                        {% for follower in profile.get_following %}
+                        <li>
+                            <div class="d-flex align-items-left">
+                                <img src="{{follower.get_avatar}}" class="rounded-circle" alt="..."
+                                     style="width: 30px; height: 30px;">
+                                <a href="{% url 'members:profile' follower.user.username %}"
+                                   class="text-decoration-none text-primary hover-underline">
+                                    <small class="ms-3">@{{ follower.user.username }}</small>
+                                </a>
+                            </div>
+                        </li>
+
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    {% if not profile.is_private or not another_user %}
+    {% if not another_user %}
+    <div class="mt-4 rounded-3 bg-body-tertiary p-4">
+        <h3 class="text-center">Ваші відгуки</h3>
+        <div class="text-center mb-3">
+            <p>Кількість відгуків: {{ user.posts.count }}</p>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Додати відгук
+            </button>
+
+            <hr class="my-4">
+            <div class="row g-4">
+                {% for post in user.posts.all %}
+            </div>
+            {% endfor %}
+            {% include 'blog/_include_blocks/_posts_show.html' with posts=user_profile.posts.all edit=True %}
+            {% else %}
+            <hr class="my-4">
+            {% include 'blog/_include_blocks/_posts_show.html' with posts=user_profile.posts.all edit=False %}
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if not another_user %}
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Додати відгук</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{% url 'blog:create' %}" method="post" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            {% csrf_token %}
+                            {{ form_create_post }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Додати</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<script>
+
+    function like(post_id){
+        fetch('{% url "blog:like" 0 %}'.replace('0', post_id))
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('btn_like_' + post_id).innerText = `👍 ${data.likes}`;
+        })
+    }
+    {% for post in user_profile.posts.all %}
+        document.getElementById('btn_like_{{post.id}}').addEventListener('click', function(){
+            like({{post.id}});
+        });
+{% endfor %}
+
+    function dislike(post_id){
+        fetch('{% url "blog:dislike" 0 %}'.replace('0', post_id))
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('btn_dislike_' + post_id).innerText = `👎 ${data.dislikes}`;
+        })
+    }
+    {% for post in user_profile.posts.all %}
+        document.getElementById('btn_dislike_{{post.id}}').addEventListener('click', function(){
+            dislike({{post.id}});
+        });
+    {% endfor %}
+</script>
+{% endblock %}
